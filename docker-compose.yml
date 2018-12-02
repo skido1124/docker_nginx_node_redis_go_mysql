@@ -19,3 +19,13 @@ redis:
   container_name: 'redis'
   expose:
     - '6379'
+db:
+  build: ./db
+  container_name: 'db'
+  volumes:
+    - ./db/mysql_data:/var/lib/mysql # データの永続化
+    - ./db/init.d:/docker-entrypoint-initdb.d # 初期データ投入
+  expose:
+    - '3306'
+  environment:
+    - MYSQL_ROOT_PASSWORD=test

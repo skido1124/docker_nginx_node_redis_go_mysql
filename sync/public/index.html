@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>socket.io chat</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+</head>
+<body>
+    <ul id="messages"></ul>
+    <form id="message_form" action="#">
+      <input id="input_msg" autocomplete="off" /><button>Send</button>
+      <button type="button" class="unsubscribe">unsubscribe</button>
+    </form>
+  <script>
+      var socketio = io();
+      $(function(){
+        $('#message_form').submit(function(){
+          socketio.emit('message', $('#input_msg').val());
+          $('#input_msg').val('');
+          return false;
+        });
+        socketio.on('message',function(msg){
+          $('#messages').append($('<li>').text(msg));
+        });
+        $('.unsubscribe').on('click', function(){
+          socketio.emit('unsubscribe', 'test');
+          $('#messages').empty().text('unsubscribed');
+        })
+      });
+    </script>
+</body>
+</html>

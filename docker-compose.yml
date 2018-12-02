@@ -1,0 +1,21 @@
+nginx:
+  build: ./nginx
+  container_name: 'nginx'
+  ports:
+    - '7000:8080'
+  links:
+    - 'sync'
+sync:
+  build: ./sync
+  container_name: 'sync'
+  expose:
+    - '7000'
+  environment:
+    - PORT=7000
+  links:
+    - 'redis'
+redis:
+  image: 'redis:5.0.2-alpine'
+  container_name: 'redis'
+  expose:
+    - '6379'
